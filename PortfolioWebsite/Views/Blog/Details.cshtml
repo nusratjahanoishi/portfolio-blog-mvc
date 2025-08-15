@@ -1,0 +1,81 @@
+﻿@model PortfolioWebsite.Models.BlogPost
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<div class="container">
+    <article class="mb-5">
+        <h2>@Model.Title</h2>
+        <p class="blog-meta">By @Model.Author on @Model.PublishedDate.ToString("MMMM dd, yyyy")</p>
+        <div class="blog-content">
+            @Html.Raw(Model.Content.Replace("\n", "<br />"))
+        </div>
+    </article>
+
+    <hr />
+
+    <div class="comments-section">
+        <h3>Comments (@Model.Comments.Count)</h3>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Leave a Comment</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("AddComment", "Blog", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("blogPostId", Model.Id)
+
+                    <div class="form-group mb-3">
+                        @Html.Label("Name", new { @class = "form-label" })
+                        @Html.TextBox("Name", "", new { @class = "form-control", required = "required" })
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @Html.Label("Email", new { @class = "form-label" })
+                        @Html.TextBox("Email", "", new { @class = "form-control", type = "email" })
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @Html.Label("Message", "Comment", new { @class = "form-label" })
+                        @Html.TextArea("Message", "", new { @class = "form-control", rows = 4, required = "required" })
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                }
+            </div>
+        </div>
+
+        @if (Model.Comments.Any())
+        {
+            <div class="comments-list">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="comment-card mb-3 p-3">
+                        <strong>@comment.Name</strong>
+                        <small class="text-muted">on @comment.CreatedDate.ToString("MMM dd, yyyy 'at' h:mm tt")</small>
+                        <p class="mt-2">@comment.Message</p>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No comments yet. Be the first to comment!</p>
+        }
+    </div>
+
+    <p class="mt-4">@Html.ActionLink("← Back to Blog", "Index", null, new { @class = "btn btn-secondary" })</p>
+</div>
+

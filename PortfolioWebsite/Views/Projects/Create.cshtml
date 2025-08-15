@@ -1,0 +1,74 @@
+﻿@model PortfolioWebsite.Models.Project
+@{
+    ViewBag.Title = "Share Your Project";
+}
+
+<div class="container">
+    <h2 class="text-center mb-5">Share Your Project</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 4, required = "required" })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.TechnologyUsed, "Technologies Used", new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.TechnologyUsed, new { @class = "form-control", placeholder = "e.g., ASP.NET MVC, JavaScript, Bootstrap" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.Category, new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.Category, new SelectList(new[] { "Web Application", "Mobile App", "Desktop App", "API", "Game", "Other" }), "Select Category", new { @class = "form-control" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.ProjectUrl, "Project URL (Optional)", new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.ProjectUrl, new { @class = "form-control", placeholder = "https://github.com/username/project" })
+                </div>
+
+                <div class="form-group mb-3">
+                    @Html.LabelFor(m => m.ImageUrl, "Image URL (Optional)", new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.ImageUrl, new { @class = "form-control", placeholder = "https://example.com/image.jpg" })
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg">Share Project</button>
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary btn-lg ms-2" })
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Sharing Tips</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>Write a clear, descriptive title</li>
+                            <li>Explain what your project does</li>
+                            <li>List the technologies you used</li>
+                            <li>Add a link to your GitHub repo</li>
+                            <li>Include a screenshot if possible</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

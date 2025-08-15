@@ -1,0 +1,21 @@
+﻿@model List<PortfolioWebsite.Models.BlogPost>
+@{
+    ViewBag.Title = "Blog Posts";
+}
+
+<div class="container">
+    <h2 class="text-center mb-5">Latest Blog Posts</h2>
+    @foreach (var post in Model)
+    {
+        <div class="card blog-card mb-4">
+            <div class="card-body">
+                <span class="blog-category">@post.Category</span>
+                <h3>@Html.ActionLink(post.Title, "Details", new { id = post.Id }, new { @style = "text-decoration: none;" })</h3>
+                <p class="blog-meta">By @post.Author on @post.PublishedDate.ToString("MMMM dd, yyyy")</p>
+                <p>@post.Summary</p>
+                @Html.ActionLink("Read More →", "Details", new { id = post.Id }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    }
+</div>
+

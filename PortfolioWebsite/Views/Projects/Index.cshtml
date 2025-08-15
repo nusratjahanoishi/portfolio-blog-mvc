@@ -1,0 +1,26 @@
+﻿@model List<PortfolioWebsite.Models.Project>
+@{
+    ViewBag.Title = "My Projects";
+}
+
+<div class="container">
+    <h2 class="text-center mb-5">My Projects</h2>
+    <div class="row">
+        @foreach (var project in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card project-card">
+                    <img src="@project.ImageUrl" alt="@project.Title" class="project-image" />
+                    <div class="card-body">
+                        <span class="project-category">@project.Category</span>
+                        <h3 class="card-title">@project.Title</h3>
+                        <p class="card-text">@project.Description</p>
+                        <p><strong>Technologies:</strong> @project.TechnologyUsed</p>
+                        <p><small>Created: @project.CreatedDate.ToString("MMM yyyy")</small></p>
+                        @Html.ActionLink("View Details", "Details", new { id = project.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
